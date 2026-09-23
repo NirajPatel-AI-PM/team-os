@@ -33,7 +33,7 @@ From a local clone, pass the path to the clone in place of `NirajPatel-AI-PM/tea
 | `architect` | subagent | Reads the code and writes a plan to `plans/`. | A change gets built before anyone decides its shape. |
 | `code-reviewer` | subagent | Reports findings with a file, a line and the input that breaks it. Its only tools are Read, Grep and Glob. | A reviewer that can edit files can change the code it is judging. |
 | `test-writer` | subagent | Writes and runs tests. When the code is wrong, it writes the failing test and reports it. | A test written to make new code pass can hide the bug it should catch. |
-| `/rate` | command | Records a thumbs up or down. | The team needs a satisfaction measure that is not a survey. |
+| `/team-os:rate` | command | Records a thumbs up or down: `/team-os:rate up` or `/team-os:rate down`. | The team needs a satisfaction measure that is not a survey. |
 
 Two hooks run in the background. One writes the usage records described below. The other is the classification gate.
 
@@ -41,7 +41,7 @@ The `code-reviewer` subagent is read-only because of its tool list. The limits o
 
 ## Measuring adoption
 
-The recording hook appends one line to `~/.claude/team-os/records.jsonl` when a session starts or resumes, and when Claude uses one of this plugin's skills or subagents through its tools. `/rate` appends a rating line. Set `TEAM_OS_RECORDS` to write somewhere else.
+The recording hook appends one line to `~/.claude/team-os/records.jsonl` when a session starts or resumes, and when Claude uses one of this plugin's skills or subagents through its tools. `/team-os:rate` appends a rating line. Set `TEAM_OS_RECORDS` to write somewhere else.
 
 A record holds the time, a pseudonymous user id, a pseudonymous session id, the event kind, the skill or subagent name, and the rating. This is the format, with placeholder values:
 
