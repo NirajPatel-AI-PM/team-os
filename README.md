@@ -41,7 +41,7 @@ The `code-reviewer` subagent is read-only because of its tool list. The limits o
 
 ## Measuring adoption
 
-The recording hook appends one line to `~/.claude/team-os/records.jsonl` when a session starts or resumes, and when Claude uses one of this plugin's skills or subagents through its tools. `/team-os:rate` appends a rating line. Set `TEAM_OS_RECORDS` to write somewhere else.
+The recording hook appends one line to `~/.claude/team-os/records.jsonl` when a session starts or resumes, and when Claude uses one of this plugin's skills or subagents through its tools. `/team-os:rate` appends a rating line. Send it as its own message: inside a longer message, Claude reads it as text and cannot run it. Set `TEAM_OS_RECORDS` to write somewhere else.
 
 A record holds the time, a pseudonymous user id, a pseudonymous session id, the event kind, the skill or subagent name, and the rating. This is the format, with placeholder values:
 
