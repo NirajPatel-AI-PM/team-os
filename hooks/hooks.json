@@ -5,6 +5,9 @@
     ],
     "PostToolUse": [
       { "matcher": "Skill|Task|Agent", "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/record.ts\"" }] }
+    ],
+    "PreToolUse": [
+      { "matcher": "Bash|WebFetch|WebSearch|mcp__.*", "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/classify-gate.ts\"" }] }
     ]
   }
 }
