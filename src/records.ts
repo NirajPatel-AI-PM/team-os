@@ -19,7 +19,7 @@ export function recordsPath(): string {
   return process.env.TEAM_OS_RECORDS ?? join(homedir(), '.claude', 'team-os', 'records.jsonl');
 }
 
-// Pseudonymous, not anonymous: anyone who can guess an email can recompute its id.
+// Pseudonymous, not anonymous: anyone who knows a session id can recompute its hash.
 export function pseudonym(value: string): string {
   return createHash('sha256').update(value).digest('hex').slice(0, 12);
 }
