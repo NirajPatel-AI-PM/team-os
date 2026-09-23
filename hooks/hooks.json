@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "SessionStart": [
+      { "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/record.ts\"" }] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Skill|Task|Agent", "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/record.ts\"" }] }
+    ]
+  }
+}
