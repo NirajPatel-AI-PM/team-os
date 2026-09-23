@@ -1,0 +1,13 @@
+{
+  "name": "team-os",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Claude Code as a co-worker for product managers, designers and engineers, with adoption measured from the records it writes.",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "test": "node --test test/*.test.ts",
+    "adoption": "node scripts/adoption.ts",
+    "dashboard": "node scripts/dashboard.ts"
+  }
+}

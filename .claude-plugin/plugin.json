@@ -1,0 +1,8 @@
+{
+  "name": "team-os",
+  "version": "0.1.0",
+  "description": "Skills, subagents and hooks for a product team that ships with Claude Code, with adoption measured from records the plugin writes.",
+  "author": { "name": "Niraj Patel" },
+  "homepage": "https://github.com/NirajPatel-AI-PM/team-os",
+  "license": "MIT"
+}

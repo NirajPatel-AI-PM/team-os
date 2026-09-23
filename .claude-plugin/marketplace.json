@@ -1,0 +1,11 @@
+{
+  "name": "niraj-patel",
+  "owner": { "name": "Niraj Patel" },
+  "plugins": [
+    {
+      "name": "team-os",
+      "source": "./",
+      "description": "Skills, subagents and hooks for a product team that ships with Claude Code."
+    }
+  ]
+}
