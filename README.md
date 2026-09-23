@@ -61,15 +61,17 @@ Three measures come from the records:
 - Sessions per user: sessions that week divided by active users that week.
 - Thumbs-up rate: up ratings divided by all ratings, always shown with n.
 
-From the author's records, `examples/records.jsonl` [PENDING: needs Plan A Task 7]:
+From `examples/records.jsonl`:
 
-- Weekly active users: [PENDING: needs Plan A Task 7]
-- Sessions per user: [PENDING: needs Plan A Task 7]
-- Thumbs-up rate: [PENDING: needs Plan A Task 7], n = [PENDING: needs Plan A Task 7]
+- Weekly active users: 1
+- Sessions per user: 8.0
+- Thumbs-up rate: 100%, n = 8
 
-Screenshot `docs/dashboard.png`: [PENDING: needs Plan A Task 7]
+![The dashboard built from these records](docs/dashboard.png)
 
-*One user: the author, building this repository. It shows the pipeline, not adoption.*
+*These records come from 8 scripted sessions that Claude ran as a product manager on a small demo notes app, in a clean Claude Code profile with only this plugin installed. Claude rated each answer after reading it. `examples/sessions.md` holds each request and answer. It shows the pipeline, not adoption.*
+
+In 2 of the 8 sessions, Claude did the work without the skill or subagent the request called for. "Review the last commit" got a direct review, not the `review` skill. "Get a plan written and get tests written" got both, but not from `architect` or `test-writer`. Neither session wrote a skill or agent record, so the records count only what Claude chose to invoke.
 
 To measure a team, collect each person's `records.jsonl`, join them into one file, and run both scripts on it from the repository root:
 
@@ -99,7 +101,7 @@ Its limits:
 
 - How the system at work spread to more than 35 people. That was a people problem, and code does not record it.
 - Most of the skills. The system at work holds three dozen. Seven general ones are here, written for this repository.
-- Anything measured across more than one user. The records here are the author's.
+- Anything measured across more than one user, or from real use. The records here are scripted sessions.
 
 ## Run the tests
 

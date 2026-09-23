@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Team OS adoption</title>
+<style>
+:root { --bg:#fbfbfa; --fg:#1d1d1b; --muted:#6b6b66; --card:#ffffff; --line:#e6e5e0; --accent:#2f5d8a; }
+@media (prefers-color-scheme: dark) { :root { --bg:#161615; --fg:#ecebe6; --muted:#9a9993; --card:#1f1f1d; --line:#2e2e2b; --accent:#7fa8d1; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 32px 16px 48px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 15px; margin: 32px 0 8px; }
+.sub { color: var(--muted); margin: 0 0 24px; }
+.tiles { display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; }
+.tile { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; display:flex; flex-direction:column; }
+.value { font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.label { color: var(--muted); font-size: 13px; }
+svg { width:100%; height:auto; background:var(--card); border:1px solid var(--line); border-radius:10px; }
+svg rect { fill: var(--accent); }
+svg text { fill: var(--muted); font-size: 11px; }
+table { width:100%; border-collapse: collapse; background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+th, td { text-align:left; padding:8px 12px; border-bottom:1px solid var(--line); font-variant-numeric: tabular-nums; }
+th { color: var(--muted); font-weight: 500; font-size: 13px; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; }
+footer { color: var(--muted); font-size: 13px; margin-top: 32px; }
+</style>
+</head>
+<body>
+<main>
+<h1>Team OS adoption</h1>
+<p class="sub">1 user. Source: 8 scripted sessions Claude ran on a demo app, 23 Sep 2026. Generated 2026-09-23.</p>
+<div class="tiles">
+<div class="tile"><span class="value">1</span>
+<span class="label">active users, week of 2026-09-21</span></div>
+<div class="tile"><span class="value">8.0</span>
+<span class="label">sessions per user, that week</span></div>
+<div class="tile"><span class="value">100%</span>
+<span class="label">thumbs up, n=8</span></div>
+</div>
+<h2>Active users per week</h2>
+<svg viewBox="0 0 640 180" role="img" aria-label="Active users per week"><rect x="115.6" y="28" width="408.79999999999995" height="124" rx="3"><title>2026-09-21: 1 active</title></rect>
+<text x="320" y="172" text-anchor="middle">09-21</text></svg>
+<h2>Most used</h2>
+<table>
+<thead><tr><th>Kind</th><th>Name</th><th class="num">Uses</th></tr></thead>
+<tbody>
+<tr><td>agent</td><td>code-reviewer</td><td class="num">1</td></tr>
+<tr><td>skill</td><td>design-brief</td><td class="num">1</td></tr>
+<tr><td>skill</td><td>outcome-roadmap</td><td class="num">1</td></tr>
+<tr><td>skill</td><td>release-gate</td><td class="num">1</td></tr>
+<tr><td>skill</td><td>review</td><td class="num">1</td></tr>
+<tr><td>skill</td><td>rice</td><td class="num">1</td></tr>
+<tr><td>skill</td><td>security-review-gate</td><td class="num">1</td></tr>
+<tr><td>skill</td><td>spec</td><td class="num">1</td></tr>
+</tbody>
+</table>
+<footer>Built from content-free records: time, pseudonymous user and session ids, event, name, rating. No prompts, paths or output are recorded.</footer>
+</main>
+</body>
+</html>
