@@ -8,7 +8,7 @@ if (rating !== 'up' && rating !== 'down') {
 appendRecord({
   ts: new Date().toISOString(),
   user: currentUser(),
-  session: pseudonym(process.env.CLAUDE_SESSION_ID ?? 'cli'),
+  session: pseudonym(process.env.CLAUDE_CODE_SESSION_ID ?? process.env.CLAUDE_SESSION_ID ?? 'cli'),
   event: 'rating',
   rating,
 });

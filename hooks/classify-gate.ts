@@ -1,5 +1,4 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { readFileSync, realpathSync } from 'node:fs';
 import { classify, isOutbound } from '../src/classify.ts';
 
 export function decide(event: { tool_name?: string; tool_input?: Record<string, unknown> }): { block: boolean; message: string } {
@@ -7,7 +6,7 @@ export function decide(event: { tool_name?: string; tool_input?: Record<string, 
   const input = event.tool_input ?? {};
   if (!isOutbound(tool, input)) return { block: false, message: '' };
 
-  const { level, reasons } = classify(JSON.stringify(input));
+  const { level, reasons } = classify(JSON.stringify(input).replace(/\\[nrtbf]/g, ' '));
   if (level !== 'restricted') return { block: false, message: '' };
   return {
     block: true,
@@ -15,7 +14,7 @@ export function decide(event: { tool_name?: string; tool_input?: Record<string, 
   };
 }
 
-if (import.meta.filename === resolve(process.argv[1] ?? '')) {
+if (process.argv[1] !== undefined && import.meta.filename === realpathSync(process.argv[1])) {
   let event;
   try {
     event = JSON.parse(readFileSync(0, 'utf8'));

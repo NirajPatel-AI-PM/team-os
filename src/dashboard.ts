@@ -68,7 +68,7 @@ ${bars(s)}
 <table>
 <thead><tr><th>Kind</th><th>Name</th><th class="num">Uses</th></tr></thead>
 <tbody>
-${s.usage.slice(0, 12).map((u) => `<tr><td>${u.kind}</td><td>${esc(u.name)}</td><td class="num">${u.count}</td></tr>`).join('\n')}
+${s.usage.slice(0, 12).map((u) => `<tr><td>${esc(u.kind)}</td><td>${esc(u.name)}</td><td class="num">${u.count}</td></tr>`).join('\n')}
 </tbody>
 </table>
 <footer>Built from content-free records: time, pseudonymous user and session ids, event, name, rating. No prompts, paths or output are recorded.</footer>

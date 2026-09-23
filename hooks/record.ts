@@ -1,5 +1,4 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { readFileSync, realpathSync } from 'node:fs';
 import { appendRecord, currentUser, pseudonym, type UsageRecord } from '../src/records.ts';
 
 export type HookEvent = {
@@ -30,7 +29,7 @@ export function toRecord(event: HookEvent, user: string, now: Date): UsageRecord
   return null;
 }
 
-if (import.meta.filename === resolve(process.argv[1] ?? '')) {
+if (process.argv[1] !== undefined && import.meta.filename === realpathSync(process.argv[1])) {
   // A recording failure must never interrupt the user's session.
   try {
     const rec = toRecord(JSON.parse(readFileSync(0, 'utf8')) as HookEvent, currentUser(), new Date());

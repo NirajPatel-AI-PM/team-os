@@ -17,7 +17,7 @@ Inside Claude Code:
 /plugin install team-os@niraj-patel
 ```
 
-From a local clone, pass the path to the clone in place of `NirajPatel-AI-PM/team-os`, for example `/plugin marketplace add ~/src/team-os`. Restart Claude Code after installing. The hooks run `node` on TypeScript files, so Node 24 must be on your `PATH`.
+From a local clone, pass the path to the clone in place of `NirajPatel-AI-PM/team-os`, for example `/plugin marketplace add /path/to/team-os`. Restart Claude Code after installing. The hooks run `node` on TypeScript files, so Node 24 must be on your `PATH`. Without it, both hooks fail: no usage record is written, and the classification gate allows every call.
 
 ## What is in it
 
@@ -37,11 +37,11 @@ From a local clone, pass the path to the clone in place of `NirajPatel-AI-PM/tea
 
 Two hooks run in the background. One writes the usage records described below. The other is the classification gate.
 
-The `code-reviewer` subagent is read-only because of its tool list. The limits on the other two are instructions in their prompts. `architect` has the Write tool and `test-writer` has Edit, so they rely on the model following those instructions.
+The `code-reviewer` subagent is read-only because of its tool list. The limits on `architect` and `test-writer` come from their prompts, not their tools. `architect` has the Write tool, and `test-writer` has Write, Edit and Bash; the prompt, not the tool list, limits test-writer to the test directory. Both rely on the model following those instructions.
 
 ## Measuring adoption
 
-The recording hook appends one line to `~/.claude/team-os/records.jsonl` when a session starts and when Claude uses one of this plugin's skills or subagents. `/rate` appends a rating line. Set `TEAM_OS_RECORDS` to write somewhere else.
+The recording hook appends one line to `~/.claude/team-os/records.jsonl` when a session starts or resumes, and when Claude uses one of this plugin's skills or subagents through its tools. `/rate` appends a rating line. Set `TEAM_OS_RECORDS` to write somewhere else.
 
 A record holds the time, a pseudonymous user id, a pseudonymous session id, the event kind, the skill or subagent name, and the rating. This is the format, with placeholder values:
 
@@ -49,7 +49,9 @@ A record holds the time, a pseudonymous user id, a pseudonymous session id, the 
 {"ts":"<ISO 8601 time>","user":"<12 hex chars>","session":"<12 hex chars>","event":"skill","name":"spec"}
 ```
 
-A record never holds prompt text, file paths, tool arguments or output. Skills and subagents from other plugins produce no record. The ids are the first 12 hex characters of a SHA-256 hash of your git email, or of your OS user name when git has none. That makes them pseudonymous, not anonymous. Anyone who can guess your email can recompute your id. A rating records up or down and the time. It does not record which answer it rates.
+A record never holds prompt text, file paths, tool arguments or output. Skills and subagents from other plugins produce no record. A skill invoked by typing its slash command, such as `/team-os:spec`, never calls the Skill tool, so it is not recorded either; only a skill or subagent Claude invokes through its tools is.
+
+The user id is a random id, 12 hex characters created once per machine and stored in a `user-id` file next to the records file. It does not derive from your git email or OS user name, so one person running this on two machines counts as two users. The session id is a pseudonym: the first 12 hex characters of a SHA-256 hash of Claude Code's session id. A rating records up or down and the time. It does not record which answer it rates.
 
 The plugin never sends records anywhere. Each person's file stays on their machine until they share it.
 

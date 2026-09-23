@@ -38,3 +38,9 @@ test('the gate allows restricted data on a local tool', () => {
 test('the gate allows internal data on an outbound tool', () => {
   assert.equal(decide({ tool_name: 'WebFetch', tool_input: { prompt: 'email jane@example.com' } }).block, false);
 });
+
+test('the gate blocks restricted data hidden behind a JSON-escaped newline', () => {
+  const d = decide({ tool_name: 'mcp__slack__post_message', tool_input: { text: 'Patient list:\n123-45-6789' } });
+  assert.equal(d.block, true);
+  assert.match(d.message, /US social security number/);
+});

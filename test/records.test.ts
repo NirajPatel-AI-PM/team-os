@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
-import { appendRecord, pseudonym, readRecords, type UsageRecord } from '../src/records.ts';
+import { dirname, join } from 'node:path';
+import { appendRecord, currentUser, pseudonym, readRecords, type UsageRecord } from '../src/records.ts';
 import { toRecord } from '../hooks/record.ts';
 
 const tmp = () => join(mkdtempSync(join(tmpdir(), 'team-os-')), 'records.jsonl');
@@ -26,12 +26,40 @@ test('append then read returns the same records in order', () => {
 
 test('read skips blank and malformed lines rather than failing', () => {
   const path = tmp();
-  writeFileSync(path, '\n{not json}\n{"ts":"t","user":"u","session":"s","event":"session"}\n');
+  writeFileSync(path, '\n{not json}\n{"ts":"2026-09-21T10:00:00.000Z","user":"u","session":"s","event":"session"}\n');
   assert.equal(readRecords(path).length, 1);
 });
 
 test('reading a missing file returns no records', () => {
-  assert.deepEqual(readRecords(join(tmpdir(), 'does-not-exist-ptp.jsonl')), []);
+  assert.deepEqual(readRecords(join(tmpdir(), 'does-not-exist.jsonl')), []);
+});
+
+test('readRecords skips a record with an unparseable timestamp or a non-string name', () => {
+  const path = tmp();
+  writeFileSync(
+    path,
+    [
+      JSON.stringify({ ts: 'not-a-date', user: 'u', session: 's', event: 'session' }),
+      JSON.stringify({ ts: '2026-09-21T10:00:00.000Z', user: 'u', session: 's', event: 'skill', name: 123 }),
+      JSON.stringify({ ts: '2026-09-21T10:00:00.000Z', user: 'u', session: 's', event: 'session' }),
+    ].join('\n') + '\n',
+  );
+  assert.equal(readRecords(path).length, 1);
+});
+
+test('currentUser reads or creates a random id next to the records file, never derived from git or the OS user', () => {
+  const path = tmp();
+  const prev = process.env.TEAM_OS_RECORDS;
+  process.env.TEAM_OS_RECORDS = path;
+  try {
+    const id = currentUser();
+    assert.match(id, /^[0-9a-f]{12}$/);
+    assert.equal(currentUser(), id);
+    assert.ok(existsSync(join(dirname(path), 'user-id')));
+  } finally {
+    if (prev === undefined) delete process.env.TEAM_OS_RECORDS;
+    else process.env.TEAM_OS_RECORDS = prev;
+  }
 });
 
 const now = new Date('2026-09-21T10:00:00.000Z');

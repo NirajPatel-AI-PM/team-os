@@ -1,7 +1,6 @@
-import { createHash } from 'node:crypto';
-import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
-import { execFileSync } from 'node:child_process';
-import { homedir, userInfo } from 'node:os';
+import { createHash, randomBytes } from 'node:crypto';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { dirname, join } from 'node:path';
 
 export type EventKind = 'session' | 'skill' | 'agent' | 'rating';
@@ -26,11 +25,13 @@ export function pseudonym(value: string): string {
 }
 
 export function currentUser(): string {
-  try {
-    const email = execFileSync('git', ['config', 'user.email'], { encoding: 'utf8' }).trim();
-    if (email) return pseudonym(email);
-  } catch {}
-  return pseudonym(userInfo().username);
+  const dir = dirname(recordsPath());
+  const idPath = join(dir, 'user-id');
+  if (existsSync(idPath)) return readFileSync(idPath, 'utf8').trim();
+  mkdirSync(dir, { recursive: true });
+  const id = randomBytes(6).toString('hex');
+  writeFileSync(idPath, id);
+  return id;
 }
 
 export function appendRecord(rec: UsageRecord, path = recordsPath()): void {
@@ -44,7 +45,10 @@ export function readRecords(path = recordsPath()): UsageRecord[] {
   for (const line of readFileSync(path, 'utf8').split('\n')) {
     if (!line.trim()) continue;
     try {
-      out.push(JSON.parse(line) as UsageRecord);
+      const rec = JSON.parse(line) as UsageRecord;
+      if (Number.isNaN(Date.parse(rec.ts))) continue;
+      if (rec.name !== undefined && typeof rec.name !== 'string') continue;
+      out.push(rec);
     } catch {}
   }
   return out;

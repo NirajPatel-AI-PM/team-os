@@ -1,6 +1,6 @@
 export type Level = 'public' | 'internal' | 'restricted';
 
-// ponytail: pattern heuristics with known misses; a real deployment calls the organization's DLP classifier here.
+// pattern heuristics with known misses; a real deployment calls the organization's DLP classifier here.
 const RESTRICTED: Array<[string, RegExp]> = [
   ['US social security number', /\b\d{3}-\d{2}-\d{4}\b/],
   ['medical record number', /\bMRN[:#\s]*\d{6,}\b/i],
